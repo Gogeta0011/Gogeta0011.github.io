@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mir Yaseen Ali — Software Engineer</title>
+  <style>
+    :root {
+      --bg: #0a0b0e;
+      --surface: #16181d;
+      --surface-2: #1e2128;
+      --clay: #e07a5f;
+      --moss: #81b29a;
+      --cream: #f4f1de;
+      --muted: #9c9890;
+      --border: rgba(255,255,255,0.08);
+      --glow: rgba(224,122,95,0.35);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--cream);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 20% 10%, rgba(224,122,95,0.08), transparent 40%),
+                  radial-gradient(circle at 80% 90%, rgba(129,178,154,0.06), transparent 40%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      background: rgba(10,11,14,0.75);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 0;
+    }
+    .nav-inner {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo { font-weight: 700; letter-spacing: -0.02em; }
+    .nav-links { display: flex; gap: 1.4rem; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.92rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+    .nav-links a:hover {
+      color: var(--cream);
+      background: rgba(255,255,255,0.06);
+    }
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0.65rem;
+      right: 0.65rem;
+      bottom: 0.15rem;
+      height: 2px;
+      background: var(--clay);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.22s ease;
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .container { max-width: 1150px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Hero */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+      padding: 4.5rem 0 3rem;
+    }
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+    }
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.035em;
+      font-weight: 800;
+    }
+    .hero .role {
+      font-size: 1.15rem;
+      color: var(--moss);
+      margin: 0.5rem 0 1rem;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(129,178,154,0.12);
+      color: var(--moss);
+      border: 1px solid rgba(129,178,154,0.25);
+      padding: 0.35rem 0.85rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      margin-bottom: 1rem;
+    }
+    .hero-links a {
+      color: var(--clay);
+      margin-right: 1.2rem;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .hero-links a:hover { text-decoration: underline; }
+    .hero-links a.download {
+      display: inline-block;
+      color: var(--cream);
+      background: var(--clay);
+      padding: 0.28rem 0.7rem;
+      border-radius: 999px;
+      text-decoration: none;
+    }
+    .hero-links a.download:hover { text-decoration: none; filter: brightness(1.08); }
+
+    /* Terminal */
+    .terminal {
+      background: #0d0f14;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+    }
+    .term-header {
+      background: #1a1d24;
+      padding: 0.55rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #febc2e; }
+    .dot-g { background: #28c840; }
+    .term-body {
+      padding: 1rem 1.1rem 0.6rem;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      min-height: 220px;
+      max-height: 320px;
+      overflow-y: auto;
+    }
+    .term-line { margin-bottom: 0.25rem; white-space: pre-wrap; }
+    .prompt { color: var(--moss); }
+    .cmd { color: var(--clay); }
+    .output { color: #d6d3d1; }
+    .term-input-row {
+      display: flex;
+      align-items: center;
+      padding: 0.6rem 1rem 0.8rem;
+      border-top: 1px solid var(--border);
+      gap: 0.4rem;
+    }
+    .term-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--cream);
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+    }
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      padding: 0.5rem 1rem 0.9rem;
+    }
+    .suggestions button {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.75rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .suggestions button:hover {
+      color: var(--cream);
+      border-color: var(--clay);
+    }
+
+    section { padding: 3.5rem 0; }
+    h2 {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--clay);
+      margin-bottom: 1.4rem;
+      font-weight: 600;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Experience */
+    .timeline { position: relative; padding-left: 1.1rem; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.3rem;
+      bottom: 0.3rem;
+      width: 2px;
+      background: var(--border);
+    }
+    .job {
+      position: relative;
+      margin-bottom: 1.6rem;
+      padding-left: 1.3rem;
+    }
+    .job::before {
+      content: "";
+      position: absolute;
+      left: -1.5rem;
+      top: 0.4rem;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--clay);
+      box-shadow: 0 0 0 3px rgba(224,122,95,0.15);
+    }
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .job h3 { font-size: 1.05rem; }
+    .job .meta { color: var(--muted); font-size: 0.86rem; }
+    .job ul {
+      margin-top: 0.35rem;
+      padding-left: 1.05rem;
+      color: #d6d3d1;
+      font-size: 0.94rem;
+    }
+
+    /* Projects */
+    .projects { display: grid; gap: 1.1rem; }
+    @media (min-width: 720px) {
+      .projects { grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); }
+    }
+    .project {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.35rem 1.4rem;
+      cursor: pointer;
+      transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+      position: relative;
+    }
+    .project:hover {
+      transform: translateY(-5px);
+      border-color: rgba(224,122,95,0.5);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+    }
+    .project h3 { font-size: 1.12rem; margin-bottom: 0.2rem; }
+    .tech { color: var(--moss); font-size: 0.82rem; margin-bottom: 0.5rem; }
+    .project p { color: var(--muted); font-size: 0.93rem; }
+    .project .more {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      color: #d6d3d1;
+      font-size: 0.9rem;
+      margin-top: 0.4rem;
+    }
+    .project.open .more { max-height: 200px; }
+    .project .hint {
+      position: absolute;
+      top: 0.9rem;
+      right: 1rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .project:hover .hint { opacity: 1; }
+
+    /* Skills — unique effects */
+    .skills { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+    .skill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 999px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.22s ease;
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill:hover {
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+    }
+
+    /* Python — snake scale shimmer */
+    .skill[data-skill="Python"]:hover {
+      background: linear-gradient(90deg, #306998, #ffd43b, #306998);
+      background-size: 200% 100%;
+      animation: snake 1.2s linear infinite;
+      color: #111;
+      border-color: #ffd43b;
+      font-weight: 600;
+    }
+    @keyframes snake {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* FastAPI — speed lines */
+    .skill[data-skill="FastAPI"]:hover::after {
+      content: "⚡";
+      position: absolute;
+      right: 0.4rem;
+      animation: zap 0.4s ease infinite alternate;
+    }
+    @keyframes zap {
+      from { transform: scale(1); opacity: 0.6; }
+      to { transform: scale(1.3); opacity: 1; }
+    }
+    .skill[data-skill="FastAPI"]:hover {
+      border-color: #009688;
+      color: #4db6ac;
+    }
+
+    /* Flask — bubbling */
+    .skill[data-skill="Flask"]:hover {
+      border-color: #000;
+      background: #111;
+      color: #eee;
+      box-shadow: 0 0 12px rgba(255,255,255,0.15);
+    }
+    .skill[data-skill="Flask"]:hover::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 70%, rgba(255,255,255,0.15) 2px, transparent 3px),
+                  radial-gradient(circle at 70% 40%, rgba(255,255,255,0.12) 2px, transparent 3px);
+      animation: bubble 1.5s ease infinite;
+      pointer-events: none;
+    }
+    @keyframes bubble {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    /* REST APIs — endpoint pulse */
+    .skill[data-skill="REST APIs"]:hover {
+      border-color: #3b82f6;
+      color: #60a5fa;
+    }
+    .skill[data-skill="REST APIs"]:hover::after {
+      content: "/";
+      margin-left: 0.3rem;
+      animation: blink 0.8s step-end infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* MySQL — database stack */
+    .skill[data-skill="MySQL"]:hover {
+      border-color: #00758f;
+      color: #4db8d6;
+    }
+    .skill[data-skill="MySQL"]:hover::before {
+      content: "▤";
+      margin-right: 0.3rem;
+      animation: stack 0.6s ease infinite alternate;
+    }
+    @keyframes stack {
+      from { transform: translateY(1px); }
+      to { transform: translateY(-1px); }
+    }
+
+    /* OAuth 2.0 — lock glow */
+    .skill[data-skill="OAuth 2.0"]:hover {
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 14px rgba(16,185,129,0.35);
+    }
+    .skill[data-skill="OAuth 2.0"]:hover::after {
+      content: "🔒";
+      margin-left: 0.35rem;
+    }
+
+    /* JWT — token split */
+    .skill[data-skill="JWT"]:hover {
+      background: linear-gradient(90deg, #6366f1 33%, #8b5cf6 33% 66%, #a78bfa 66%);
+      color: white;
+      border-color: #8b5cf6;
+    }
+
+    /* pytest — checkmark */
+    .skill[data-skill="pytest"]:hover {
+      border-color: #0ea5e9;
+      color: #38bdf8;
+    }
+    .skill[data-skill="pytest"]:hover::after {
+      content: "✓";
+      margin-left: 0.3rem;
+      animation: pop 0.3s ease;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    /* GitHub Actions — gear spin */
+    .skill[data-skill="GitHub Actions"]:hover {
+      border-color: #6e7681;
+      color: #c9d1d9;
+    }
+    .skill[data-skill="GitHub Actions"]:hover::after {
+      content: "⚙";
+      margin-left: 0.3rem;
+      display: inline-block;
+      animation: spin 1.2s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* C++ — sharp */
+    .skill[data-skill="C++"]:hover {
+      border-color: #00599c;
+      color: #4c9aff;
+      text-shadow: 0 0 8px rgba(0,89,156,0.5);
+    }
+
+    /* Java — coffee steam */
+    .skill[data-skill="Java"]:hover {
+      border-color: #f89820;
+      color: #fbbf24;
+    }
+    .skill[data-skill="Java"]:hover::after {
+      content: "☕";
+      margin-left: 0.3rem;
+      animation: steam 1.4s ease infinite;
+    }
+    @keyframes steam {
+      0%, 100% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    /* SQL — query highlight */
+    .skill[data-skill="SQL"]:hover {
+      border-color: #336791;
+      color: #5ba3d9;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    /* Git — branch */
+    .skill[data-skill="Git"]:hover {
+      border-color: #f05032;
+      color: #ff7b5c;
+    }
+    .skill[data-skill="Git"]:hover::after {
+      content: "⎇";
+      margin-left: 0.3rem;
+    }
+
+    /* Linux — terminal green */
+    .skill[data-skill="Linux"]:hover {
+      background: #0d1117;
+      border-color: #3fb950;
+      color: #3fb950;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+    }
+
+    /* AWS — cloud */
+    .skill[data-skill="AWS"]:hover {
+      border-color: #ff9900;
+      color: #ffb84d;
+      box-shadow: 0 0 16px rgba(255,153,0,0.25);
+    }
+    .skill[data-skill="AWS"]:hover::after {
+      content: "☁";
+      margin-left: 0.3rem;
+    }
+
+    /* OpenCV — vision scan */
+    .skill[data-skill="OpenCV"]:hover {
+      border-color: #5c6bc0;
+      color: #9fa8da;
+    }
+    .skill[data-skill="OpenCV"]:hover::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 2px;
+      background: #5c6bc0;
+      animation: scan 1s ease infinite;
+    }
+    @keyframes scan {
+      0% { top: 0; }
+      100% { top: 100%; }
+    }
+
+    /* Obsidian-style floating graph */
+    .graph-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem 1.4rem;
+      margin-top: 0.6rem;
+      margin-bottom: 2rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+    }
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .legend-item .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .graph-container {
+      position: relative;
+      height: 420px;
+      margin-bottom: 0.4rem;
+    }
+    .graph-container canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .graph-label {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--cream);
+      z-index: 2;
+    }
+    .graph-hint {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .edu-grid { display: grid; gap: 1rem; }
+    @media (min-width: 700px) {
+      .edu-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.15rem 1.25rem;
+    }
+    .edu-card h3 { font-size: 1rem; margin-bottom: 0.15rem; }
+    .edu-card .meta { color: var(--muted); font-size: 0.86rem; }
+
+    footer {
+      text-align: center;
+      padding: 2.2rem 0 1.6rem;
+      color: var(--muted);
+      font-size: 0.84rem;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-inner">
+      <div class="logo">Mir Yaseen Ali</div>
+      <div class="nav-links">
+        <a href="#experience">Experience</a>
+        <a href="#projects">Projects</a>
+        <a href="#skills">Skills</a>
+        <a href="#terminal">Terminal</a>
+        <a href="#education">Education</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <header class="hero">
+      <div>
+        <h1>Mir Yaseen Ali</h1>
+        <p class="role">Software Engineer · Backend & Cloud · Villa Park, IL</p>
+        <div class="badge">Authorized to work in the United States · No sponsorship required</div>
+        <div class="hero-links">
+          <a href="https://github.com/Gogeta0011" target="_blank">GitHub</a>
+          <a href="https://linkedin.com/in/yaseen0011" target="_blank">LinkedIn</a>
+          <a href="mailto:ali.mir.yaseen@outlook.com">Email</a>
+          <a class="download" href="Mir_Yaseen_Ali_Resume.pdf" download="Mir_Yaseen_Ali_Resume.pdf">Download Resume</a>
+        </div>
+      </div>
+      <div class="terminal" id="hero-terminal">
+        <div class="term-header">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span style="margin-left:0.5rem;">mir@portfolio ~</span>
+        </div>
+        <div class="term-body" id="hero-output"></div>
+        <div class="term-input-row">
+          <span class="prompt">$</span>
+          <input class="term-input" id="hero-input" placeholder="try: whoami" autocomplete="off" />
+        </div>
+      </div>
+    </header>
+
+    <section id="experience" class="reveal">
+      <h2>Experience</h2>
+      <div class="timeline">
+        <div class="job">
+          <div class="job-header">
+            <div>
+              <h3>Freelance Software Engineer</h3>
+              <div class="meta">Villa Park, IL · Remote</div>
+            </div>
+            <div class="meta">2024 – Present</div>
+          </div>
+          <ul>
+            <li>Built and maintained Python backend services using FastAPI and Flask.</li>
+            <li>Designed relational schemas and wrote SQL for MySQL databases.</li>
+            <li>Implemented OAuth 2.0 and JWT authentication with role-based access control.</li>
+            <li>Created a Gmail API pipeline that extracts receipt data and stores structured transaction records.</li>
+          </ul>
+        </div>
+        <div class="job">
+          <div class="job-header">
+            <div>
+              <h3>Capstone Project — Hand Gesture Recognition</h3>
+              <div class="meta">JNTUH · Team Project</div>
+            </div>
+            <div class="meta">2024 – 2025</div>
+          </div>
+          <ul>
+            <li>Developed a real-time computer vision system using OpenCV and MediaPipe.</li>
+            <li>Detected and tracked 3D hand landmarks from live video and mapped gestures to application controls.</li>
+            <li>Optimized frame processing to maintain performance above 30 FPS under varying lighting.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="reveal">
+      <h2>Projects <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:0.8rem;">— click a card to expand</span></h2>
+      <div class="projects">
+        <div class="project" onclick="this.classList.toggle('open')">
+          <span class="hint">click</span>
+          <h3>Gmail Bill Tracker</h3>
+          <div class="tech">Python · FastAPI · MySQL · OAuth 2.0 · JWT · pytest · GitHub Actions</div>
+          <p>FastAPI service that extracts receipt data from Gmail and stores structured records.</p>
+          <div class="more">
+            Cleans inconsistent formats, exposes authenticated REST endpoints, and includes a GitHub Actions workflow that runs the pytest suite on every push.<br>
+            <a href="https://github.com/Gogeta0011/GmailBillTracker" target="_blank" style="color:var(--clay);">View on GitHub →</a>
+          </div>
+        </div>
+        <div class="project" onclick="this.classList.toggle('open')">
+          <span class="hint">click</span>
+          <h3>Real-Time Hand Gesture Recognition</h3>
+          <div class="tech">Python · OpenCV · MediaPipe</div>
+          <p>Computer vision application that detects and tracks 3D hand landmarks from live video.</p>
+          <div class="more">
+            Maps gestures to application controls and was profiled to keep performance above 30 FPS under different lighting conditions.<br>
+            <a href="https://github.com/Gogeta0011/Major-Project" target="_blank" style="color:var(--clay);">View on GitHub →</a>
+          </div>
+        </div>
+        <div class="project" onclick="this.classList.toggle('open')">
+          <span class="hint">click</span>
+          <h3>Cloud Portfolio & Automated Deployment</h3>
+          <div class="tech">AWS S3 · CloudFront · IAM · GitHub Actions</div>
+          <p>Static portfolio hosted on S3 and distributed through CloudFront.</p>
+          <div class="more">
+            GitHub Actions deploys automatically on push. IAM and origin access controls restrict direct bucket access.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="data-structures" class="reveal">
+      <h2>Data Structures & Flow</h2>
+      <p style="color:var(--muted);margin-bottom:1.2rem;">Obsidian-style graph of project connections — drag nodes, size shows degree, thickness shows edge weight.</p>
+
+      <div class="graph-container" id="graph-all">
+        <canvas id="canvas-all"></canvas>
+      </div>
+
+      <div class="graph-legend">
+        <span class="legend-item"><span class="dot" style="background:#a78bfa"></span> Gmail Bill Tracker</span>
+        <span class="legend-item"><span class="dot" style="background:#81b29a"></span> Hand Gesture</span>
+        <span class="legend-item"><span class="dot" style="background:#ff9900"></span> Cloud Deploy</span>
+        <span class="legend-item"><span class="dot" style="background:#e07a5f"></span> Node size = degree</span>
+        <span class="legend-item"><span class="dot" style="background:#d6d3d1"></span> Edge thickness = weight</span>
+      </div>
+    </section>
+
+    <section id="skills" class="reveal">
+      <h2>Skills <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:0.8rem;">— click to highlight</span></h2>
+      <div class="skills" id="skills-container">
+        <span class="skill" data-skill="Python">Python</span>
+        <span class="skill" data-skill="FastAPI">FastAPI</span>
+        <span class="skill" data-skill="Flask">Flask</span>
+        <span class="skill" data-skill="REST APIs">REST APIs</span>
+        <span class="skill" data-skill="MySQL">MySQL</span>
+        <span class="skill" data-skill="OAuth 2.0">OAuth 2.0</span>
+        <span class="skill" data-skill="JWT">JWT</span>
+        <span class="skill" data-skill="pytest">pytest</span>
+        <span class="skill" data-skill="GitHub Actions">GitHub Actions</span>
+        <span class="skill" data-skill="C++">C++</span>
+        <span class="skill" data-skill="Java">Java</span>
+        <span class="skill" data-skill="SQL">SQL</span>
+        <span class="skill" data-skill="Git">Git</span>
+        <span class="skill" data-skill="Linux">Linux</span>
+        <span class="skill" data-skill="AWS">AWS</span>
+        <span class="skill" data-skill="OpenCV">OpenCV</span>
+      </div>
+    </section>
+
+    <section id="terminal" class="reveal">
+      <h2>Interactive Terminal</h2>
+      <div class="terminal">
+        <div class="term-header">
+          <span class="dot dot-r"></span>
+          <span class="dot dot-y"></span>
+          <span class="dot dot-g"></span>
+          <span style="margin-left:0.5rem;">mir@portfolio ~</span>
+        </div>
+        <div class="term-body" id="main-output"></div>
+        <div class="term-input-row">
+          <span class="prompt">$</span>
+          <input class="term-input" id="main-input" placeholder="type a command..." autocomplete="off" />
+        </div>
+        <div class="suggestions">
+          <button data-cmd="whoami">whoami</button>
+          <button data-cmd="projects">projects</button>
+          <button data-cmd="skills">skills</button>
+          <button data-cmd="experience">experience</button>
+          <button data-cmd="contact">contact</button>
+          <button data-cmd="clear">clear</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="education" class="reveal">
+      <h2>Education & Certifications</h2>
+      <div class="edu-grid">
+        <div class="edu-card">
+          <h3>B.Tech in Computer Science and Engineering</h3>
+          <div class="meta">Jawaharlal Nehru Technological University Hyderabad</div>
+          <div class="meta">Graduated June 2025</div>
+        </div>
+        <div class="edu-card">
+          <h3>AWS Certified Cloud Practitioner</h3>
+          <div class="meta">Amazon Web Services · Jan 2026 – Jan 2029</div>
+          <div class="meta" style="margin-top:0.5rem;">AWS Solutions Architect – Associate · In Progress</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    © 2026 Mir Yaseen Ali · Villa Park, Illinois
+  </footer>
+
+  <script>
+    const commands = {
+      whoami: "Mir Yaseen Ali\nSoftware Engineer based in Villa Park, IL.\nAuthorized to work in the United States.\nFocused on backend systems, APIs, and cloud.",
+      projects: "Gmail Bill Tracker (Python, FastAPI, MySQL)\nReal-Time Hand Gesture Recognition (OpenCV, MediaPipe)\nCloud Portfolio & Automated Deployment (AWS S3, CloudFront, GitHub Actions)",
+      skills: "Python, FastAPI, Flask, REST APIs, MySQL, OAuth 2.0, JWT, pytest, GitHub Actions, C++, Java, SQL, Git, Linux, AWS, OpenCV",
+      experience: "Freelance Software Engineer (2024–Present) — Python backends, APIs, databases\nCapstone: Hand Gesture Recognition (2024–2025) — OpenCV + MediaPipe",
+      contact: "GitHub: github.com/Gogeta0011\nLinkedIn: linkedin.com/in/yaseen0011\nEmail: ali.mir.yaseen@outlook.com",
+      help: "Available commands: whoami, projects, skills, experience, contact, clear, help",
+      clear: "CLEAR"
+    };
+
+    function typeLine(container, text, className = "output") {
+      const line = document.createElement("div");
+      line.className = "term-line " + className;
+      container.appendChild(line);
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i < text.length) {
+          line.textContent += text[i];
+          i++;
+          container.scrollTop = container.scrollHeight;
+        } else {
+          clearInterval(interval);
+        }
+      }, 12);
+    }
+
+    function runCommand(inputEl, outputEl, cmd) {
+      cmd = cmd.trim().toLowerCase();
+      if (!cmd) return;
+      const promptLine = document.createElement("div");
+      promptLine.className = "term-line";
+      promptLine.innerHTML = `<span class="prompt">$</span> <span class="cmd">${cmd}</span>`;
+      outputEl.appendChild(promptLine);
+
+      if (cmd === "clear") {
+        outputEl.innerHTML = "";
+        return;
+      }
+
+      const response = commands[cmd] || `command not found: ${cmd}\ntry: help`;
+      typeLine(outputEl, response);
+    }
+
+    function setupTerminal(inputId, outputId) {
+      const input = document.getElementById(inputId);
+      const output = document.getElementById(outputId);
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          runCommand(input, output, input.value);
+          input.value = "";
+        }
+      });
+    }
+
+    setupTerminal("hero-input", "hero-output");
+    setupTerminal("main-input", "main-output");
+
+    document.querySelectorAll(".suggestions button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const cmd = btn.dataset.cmd;
+        const output = document.getElementById("main-output");
+        const input = document.getElementById("main-input");
+        runCommand(input, output, cmd);
+      });
+    });
+
+    // Initial welcome in hero terminal
+    setTimeout(() => {
+      typeLine(document.getElementById("hero-output"), "welcome. type 'help' or 'whoami'");
+    }, 600);
+
+    // Obsidian-style floating graphs
+    function createGraph(canvasId, nodesData, edgesData) {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const container = canvas.parentElement;
+
+      function resize() {
+        canvas.width = container.clientWidth;
+        canvas.height = container.clientHeight;
+      }
+      resize();
+      window.addEventListener("resize", resize);
+
+      const nodes = nodesData.map((n, i) => {
+        const angle = (i / nodesData.length) * Math.PI * 2;
+        const radius = Math.min(canvas.width, canvas.height) * 0.28;
+        return {
+          ...n,
+          x: canvas.width / 2 + Math.cos(angle) * radius,
+          y: canvas.height / 2 + Math.sin(angle) * radius,
+          vx: 0,
+          vy: 0,
+          degree: 0,
+          r: 14
+        };
+      });
+
+      // degree centrality
+      edgesData.forEach(([a, b]) => {
+        nodes[a].degree++;
+        nodes[b].degree++;
+      });
+      const maxDegree = Math.max(...nodes.map(n => n.degree), 1);
+      nodes.forEach(n => {
+        n.r = 12 + (n.degree / maxDegree) * 10;
+      });
+
+      // edge weights (betweenness-style)
+      const edgeWeights = edgesData.map(([a, b], i) => {
+        const total = edgesData.length;
+        const center = (total - 1) / 2;
+        const distFromCenter = Math.abs(i - center);
+        const weight = 1 + (1 - distFromCenter / Math.max(center, 1)) * 2;
+        return { a, b, weight };
+      });
+      const maxWeight = Math.max(...edgeWeights.map(e => e.weight), 1);
+
+      let hovered = null;
+      let dragging = null;
+      let offsetX = 0, offsetY = 0;
+
+      function getPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      }
+
+      canvas.addEventListener("mousemove", (e) => {
+        const p = getPos(e);
+        hovered = null;
+        nodes.forEach(n => {
+          const dx = p.x - n.x, dy = p.y - n.y;
+          if (dx * dx + dy * dy < (n.r + 4) * (n.r + 4)) hovered = n;
+        });
+        if (dragging) {
+          dragging.x = p.x - offsetX;
+          dragging.y = p.y - offsetY;
+          dragging.vx = 0;
+          dragging.vy = 0;
+        }
+      });
+
+      canvas.addEventListener("mousedown", (e) => {
+        const p = getPos(e);
+        nodes.forEach(n => {
+          const dx = p.x - n.x, dy = p.y - n.y;
+          if (dx * dx + dy * dy < (n.r + 4) * (n.r + 4)) {
+            dragging = n;
+            offsetX = p.x - n.x;
+            offsetY = p.y - n.y;
+          }
+        });
+      });
+
+      canvas.addEventListener("mouseup", () => dragging = null);
+      canvas.addEventListener("mouseleave", () => { dragging = null; hovered = null; });
+
+      function tick() {
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+
+        // repulsion
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            const a = nodes[i], b = nodes[j];
+            let dx = b.x - a.x;
+            let dy = b.y - a.y;
+            let dist = Math.hypot(dx, dy) || 1;
+            const force = 1800 / (dist * dist);
+            dx /= dist; dy /= dist;
+            if (a !== dragging) { a.vx -= dx * force; a.vy -= dy * force; }
+            if (b !== dragging) { b.vx += dx * force; b.vy += dy * force; }
+          }
+        }
+
+        // attraction along edges
+        edgeWeights.forEach(e => {
+          const a = nodes[e.a], b = nodes[e.b];
+          let dx = b.x - a.x;
+          let dy = b.y - a.y;
+          let dist = Math.hypot(dx, dy) || 1;
+          const target = 90 + e.weight * 8;
+          const force = (dist - target) * 0.008 * e.weight;
+          dx /= dist; dy /= dist;
+          if (a !== dragging) { a.vx += dx * force; a.vy += dy * force; }
+          if (b !== dragging) { b.vx -= dx * force; b.vy -= dy * force; }
+        });
+
+        // mild center pull + damping
+        nodes.forEach(n => {
+          if (n === dragging) return;
+          n.vx += (cx - n.x) * 0.0008;
+          n.vy += (cy - n.y) * 0.0008;
+          n.vx *= 0.86;
+          n.vy *= 0.86;
+          n.x += n.vx;
+          n.y += n.vy;
+
+          // keep on canvas
+          const m = n.r + 12;
+          n.x = Math.max(m, Math.min(canvas.width - m, n.x));
+          n.y = Math.max(m, Math.min(canvas.height - m, n.y));
+        });
+      }
+
+      function draw() {
+        tick();
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // edges
+        edgeWeights.forEach(e => {
+          const n1 = nodes[e.a];
+          const n2 = nodes[e.b];
+          ctx.beginPath();
+          ctx.moveTo(n1.x, n1.y);
+          ctx.lineTo(n2.x, n2.y);
+          ctx.strokeStyle = "rgba(255,255,255," + (0.15 + (e.weight / maxWeight) * 0.35) + ")";
+          ctx.lineWidth = 0.8 + (e.weight / maxWeight) * 2.2;
+          ctx.stroke();
+        });
+
+        // nodes
+        nodes.forEach(n => {
+          const isHover = n === hovered || n === dragging;
+
+          if (isHover) {
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r + 10, 0, Math.PI * 2);
+            ctx.fillStyle = (n.color || "#e07a5f") + "28";
+            ctx.fill();
+          }
+
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, isHover ? n.r + 2 : n.r, 0, Math.PI * 2);
+          ctx.fillStyle = "#1c1f26";
+          ctx.fill();
+          ctx.strokeStyle = n.color || "#e07a5f";
+          ctx.lineWidth = isHover ? 2.4 : 1.6;
+          ctx.stroke();
+
+          ctx.fillStyle = isHover ? "#f4f1de" : "#e7e5e4";
+          ctx.font = "500 11px system-ui, sans-serif";
+          ctx.textAlign = "center";
+          ctx.textBaseline = "top";
+          const label = n.label.replace("\n", " ");
+          ctx.fillText(label, n.x, n.y + n.r + 6);
+        });
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
+    createGraph("canvas-all", [
+      { label: "Gmail\nReceipt", color: "#a78bfa" },
+      { label: "OAuth", color: "#34d399" },
+      { label: "FastAPI", color: "#60a5fa" },
+      { label: "MySQL", color: "#4db8d6" },
+      { label: "Video\nFrame", color: "#9fa8da" },
+      { label: "MediaPipe", color: "#81b29a" },
+      { label: "Gesture", color: "#e07a5f" },
+      { label: "Git Push", color: "#f05032" },
+      { label: "Actions", color: "#c9d1d9" },
+      { label: "S3", color: "#ffb84d" },
+      { label: "CloudFront", color: "#ff9900" }
+    ], [
+      [0,1],[1,2],[2,3],
+      [4,5],[5,6],
+      [7,8],[8,9],[9,10]
+    ]);
+
+    // Skills click
+    document.querySelectorAll(".skill").forEach(skill => {
+      skill.addEventListener("click", () => {
+        skill.classList.toggle("active");
+      });
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
